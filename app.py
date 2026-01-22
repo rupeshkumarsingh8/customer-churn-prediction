@@ -1,12 +1,20 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import pickle
+
 import joblib
 
 # Load the trained model
-with open("churn_model.sav", "rb") as f:
-    model = pickle.load(f)
+# with open("churn_model.sav", "rb") as f:
+#     model = pickle.load(f)
+@st.cache_resource
+def load_model():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(base_dir, "churn_model.sav")
+    return joblib.load(model_path)
+
+model = load_model()
+
 
 # Set up Streamlit UI
 st.set_page_config(page_title="Customer Churn Predictor", layout="centered")
